@@ -21,8 +21,6 @@ class ImagesController
         string $manipulations,
         string $path,
     ): Response {
-        $signature = request('signature');
-
         /** @var \Qubiqx\Drift\Config|null $config */
         $config = $this->driftManager
             ->configs()
@@ -37,8 +35,8 @@ class ImagesController
         /** @var \Qubiqx\Drift\Contracts\CachingStrategy $cachingStrategy */
         $cachingStrategy = new $config->cachingStrategy();
 
-        if ($cachingStrategy->validate($path, $signature, $config)) {
-            $cachedImage = $cachingStrategy->resolve($path, $signature, $config);
+        if ($cachingStrategy->validate($path, $config)) {
+            $cachedImage = $cachingStrategy->resolve($path, $config);
 
             $image = Image::make($cachedImage);
 
@@ -63,7 +61,7 @@ class ImagesController
                 : $image->{$method}($arguments);
         }
 
-        $cachingStrategy->cache($path, $signature, $image, $config);
+        $cachingStrategy->cache($path, $image, $config);
 
         return response((string) $image)->header('Content-Type', $image->mime());
     }
