@@ -1,9 +1,9 @@
 <?php
 
-namespace Flowframe\Drift\Http\Controllers;
+namespace Qubiqx\Drift\Http\Controllers;
 
-use Flowframe\Drift\DriftManager;
-use Flowframe\Drift\ManipulationsTransformer;
+use Qubiqx\Drift\DriftManager;
+use Qubiqx\Drift\ManipulationsTransformer;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -23,7 +23,7 @@ class ImagesController
     ): Response {
         $signature = request('signature');
 
-        /** @var \Flowframe\Drift\Config|null $config */
+        /** @var \Qubiqx\Drift\Config|null $config */
         $config = $this->driftManager
             ->configs()
             ->firstWhere('name', $configName);
@@ -34,7 +34,7 @@ class ImagesController
             'Config not found',
         );
 
-        /** @var \Flowframe\Drift\Contracts\CachingStrategy $cachingStrategy */
+        /** @var \Qubiqx\Drift\Contracts\CachingStrategy $cachingStrategy */
         $cachingStrategy = new $config->cachingStrategy();
 
         if ($cachingStrategy->validate($path, $signature, $config)) {

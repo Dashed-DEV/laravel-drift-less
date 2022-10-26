@@ -1,6 +1,6 @@
 <?php
 
-namespace Flowframe\Drift;
+namespace Qubiqx\Drift;
 
 class Config
 {

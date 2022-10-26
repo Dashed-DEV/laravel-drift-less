@@ -7,7 +7,7 @@ Optimize images on the fly.
 You can install the package via composer:
 
 ```
-composer require flowframe/laravel-drift
+composer require qubiqx/laravel-drift
 ```
 
 ## Usage
@@ -15,9 +15,9 @@ composer require flowframe/laravel-drift
 Simply install the package, and register a configuration in `AppServiceProvider@boot`:
 
 ```php
-use Flowframe\Drift\Config;
-use Flowframe\Drift\DriftManager;
-use Flowframe\Drift\CachingStrategies\FilesystemCachingStrategy;
+use Qubiqx\Drift\Config;
+use Qubiqx\Drift\DriftManager;
+use Qubiqx\Drift\CachingStrategies\FilesystemCachingStrategy;
 
 /** @var DriftManager $drift */
 $drift = app(DriftManager::class);
@@ -31,10 +31,10 @@ $drift->registerConfig(new Config(
 
 ### Image URLs
 
-To generate an image URL use the `\Flowframe\Drift\UrlBuilder` like so:
+To generate an image URL use the `\Qubiqx\Drift\UrlBuilder` like so:
 
 ```php
-use Flowframe\Drift\UrlBuilder;
+use Qubiqx\Drift\UrlBuilder;
 
 /** @var UrlBuilder $builder */
 $builder = app(UrlBuilder::class);

@@ -1,9 +1,9 @@
 <?php
 
-namespace Flowframe\Drift\CachingStrategies;
+namespace Qubiqx\Drift\CachingStrategies;
 
-use Flowframe\Drift\Config;
-use Flowframe\Drift\Contracts\CachingStrategy;
+use Qubiqx\Drift\Config;
+use Qubiqx\Drift\Contracts\CachingStrategy;
 use Intervention\Image\Image;
 
 class NullCachingStrategy implements CachingStrategy

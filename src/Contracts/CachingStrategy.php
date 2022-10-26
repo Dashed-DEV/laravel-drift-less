@@ -1,8 +1,8 @@
 <?php
 
-namespace Flowframe\Drift\Contracts;
+namespace Qubiqx\Drift\Contracts;
 
-use Flowframe\Drift\Config;
+use Qubiqx\Drift\Config;
 use Intervention\Image\Image;
 
 interface CachingStrategy

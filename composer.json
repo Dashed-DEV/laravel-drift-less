@@ -5,7 +5,7 @@
     "homepage": "https://github.com/qubiqx/laravel-drift-less",
     "autoload": {
         "psr-4": {
-            "Flowframe\\Drift\\": "src"
+            "Qubiqx\\Drift\\": "src"
         }
     },
     "authors": [
@@ -23,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Flowframe\\Drift\\DriftServiceProvider"
+                "Qubiqx\\Drift\\DriftServiceProvider"
             ]
         }
     },

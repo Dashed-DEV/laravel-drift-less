@@ -5,6 +5,6 @@
 ])
 
 <img
-    src="{{ app(\Flowframe\Drift\UrlBuilder::class)->url($config, $path, $manipulations) }}"
+    src="{{ app(\Qubiqx\Drift\UrlBuilder::class)->url($config, $path, $manipulations) }}"
     {{ $attributes }}
 >
