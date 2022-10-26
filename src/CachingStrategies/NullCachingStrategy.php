@@ -8,17 +8,17 @@ use Intervention\Image\Image;
 
 class NullCachingStrategy implements CachingStrategy
 {
-    public function validate(string $path, string $signature, Config $config): bool
+    public function validate(string $path, Config $config): bool
     {
         return false;
     }
 
-    public function resolve(string $path, string $signature, Config $config): string
+    public function resolve(string $path, Config $config): string
     {
         return '';
     }
 
-    public function cache(string $path, string $signature, Image $image, Config $config): void
+    public function cache(string $path, Image $image, Config $config): void
     {
     }
 }
