@@ -1,8 +1,8 @@
 {
-    "name": "flowframe/laravel-drift",
+    "name": "qubiqx/laravel-drift-less",
     "type": "library",
     "license": "MIT",
-    "homepage": "https://github.com/flowframe/laravel-drift",
+    "homepage": "https://github.com/qubiqx/laravel-drift-less",
     "autoload": {
         "psr-4": {
             "Flowframe\\Drift\\": "src"
@@ -10,8 +10,8 @@
     },
     "authors": [
         {
-            "name": "Lars Klopstra",
-            "email": "lars@flowframe.nl"
+            "name": "Robin van Maasakker",
+            "email": "robin@qubiqx.com"
         }
     ],
     "require": {
