@@ -19,7 +19,7 @@ class FilesystemCachingStrategy implements CachingStrategy
         return Storage::get("__images-cache/{$path}");
     }
 
-    public function cache(string $path, Image $image, Config $config): void
+    public function cache(string $path, string|Image $image, Config $config): void
     {
         Storage::put("__images-cache/{$path}", (string) $image);
     }
