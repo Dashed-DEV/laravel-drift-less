@@ -37,12 +37,16 @@ class ImagesController
 
         if ($cachingStrategy->validate($path, $config)) {
             $cachedImage = $cachingStrategy->resolve($path, $config);
+            if (str($path)->lower()->endsWith(['.png', '.jpg', '.jpeg', '.webp'])) {
+                $image = Image::make($cachedImage);
 
-            $image = Image::make($cachedImage);
+                $image->encode((string)str($image->mime())->afterLast('/'));
+                $mime = $image->mime();
+            } else {
+                $image = $cachedImage;
+            }
 
-            $image->encode((string) str($image->mime())->afterLast('/'));
-
-            return response((string) $image)->header('Content-Type', $image->mime());
+            return response((string)$image)->header('Content-Type', $mime ?? Storage::disk($config->filesystemDisk)->mimeType($path));
         }
 
         abort_unless(
@@ -51,18 +55,22 @@ class ImagesController
             'Image not found',
         );
 
-        $image = Image::make(
-            Storage::disk($config->filesystemDisk)->get($path),
-        );
+        $image = Storage::disk($config->filesystemDisk)->get($path);
+        if (str($path)->lower()->endsWith(['.png', '.jpg', '.jpeg', '.webp'])) {
+            $image = Image::make(
+                $image,
+            );
+            $mime = $image->mime();
 
-        foreach ($this->manipulationsTransformer->decode($manipulations) as $method => $arguments) {
-            is_array($arguments)
-                ? $image->{$method}(...$arguments)
-                : $image->{$method}($arguments);
+            foreach ($this->manipulationsTransformer->decode($manipulations) as $method => $arguments) {
+                is_array($arguments)
+                    ? $image->{$method}(...$arguments)
+                    : $image->{$method}($arguments);
+            }
         }
 
         $cachingStrategy->cache($path, $image, $config);
 
-        return response((string) $image)->header('Content-Type', $image->mime());
+        return response((string)$image)->header('Content-Type', $mime ?? Storage::disk($config->filesystemDisk)->mimeType($path));
     }
 }
