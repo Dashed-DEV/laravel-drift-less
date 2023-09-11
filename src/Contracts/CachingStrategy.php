@@ -11,5 +11,5 @@ interface CachingStrategy
 
     public function resolve(string $path, Config $config): string;
 
-    public function cache(string $path, Image $image, Config $config): void;
+    public function cache(string $path, string|Image $image, Config $config): void;
 }
