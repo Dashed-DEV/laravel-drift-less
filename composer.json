@@ -17,7 +17,7 @@
     "require": {
         "php": "^8.2",
         "illuminate/support": "^10.42",
-        "intervention/image": "^3.3",
+        "intervention/image": "^2.7",
         "illuminate/http": "^10.42"
     },
     "extra": {
