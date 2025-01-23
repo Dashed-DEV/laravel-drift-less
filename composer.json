@@ -15,10 +15,10 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "illuminate/support": "^10.42",
-        "intervention/image": "^2.7",
-        "illuminate/http": "^10.42"
+        "php": "^8.3",
+        "illuminate/support": "^11.0",
+        "intervention/image": "^3.0",
+        "illuminate/http": "^11.0"
     },
     "extra": {
         "laravel": {
