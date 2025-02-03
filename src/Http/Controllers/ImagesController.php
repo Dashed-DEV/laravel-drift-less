@@ -46,11 +46,8 @@ class ImagesController
             if (str($path)->lower()->endsWith(['.png', '.jpg', '.jpeg', '.webp'])) {
                 $image = $this->imageManager->read($cachedImage);
 
-//                $mime = str($path)->explode('.')->last();
-
                 $image = $image->encode(new AutoEncoder());
                 $mime = $image->mediaType();
-//                $image->encodeByExtension((string)str($mime)->afterLast('/'));
             } else {
                 $image = $cachedImage;
             }
@@ -73,6 +70,10 @@ class ImagesController
             foreach ($this->manipulationsTransformer->decode($manipulations) as $method => $arguments) {
                 if ($method === 'widen') {
                     $image->scale(width: $arguments);
+                } elseif ($method === 'heighten') {
+                    $image->scale(height: $arguments);
+                } elseif ($method === 'fit') {
+                    $image->scale(width: $arguments[0], height: $arguments[1]);
                 } elseif ($method === 'encode') {
                     $image->encodeByExtension($arguments);
                 } else {
@@ -85,6 +86,8 @@ class ImagesController
         }
 
         $cachingStrategy->cache($path, $image, $config);
+
+        $image = $image->encode(new AutoEncoder());
 
         return response((string)$image)->header('Content-Type', $mime ?? Storage::disk($config->filesystemDisk)->mimeType($path));
     }
