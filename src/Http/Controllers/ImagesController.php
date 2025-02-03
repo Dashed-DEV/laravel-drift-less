@@ -2,18 +2,24 @@
 
 namespace Qubiqx\Drift\Http\Controllers;
 
+use Intervention\Image\Encoders\AutoEncoder;
+use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Qubiqx\Drift\DriftManager;
 use Qubiqx\Drift\ManipulationsTransformer;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
 
 class ImagesController
 {
+    private $imageManager;
+
     public function __construct(
         public DriftManager $driftManager,
         public ManipulationsTransformer $manipulationsTransformer,
     ) {
+        $this->imageManager = new ImageManager(new Driver());
     }
 
     public function __invoke(
@@ -38,10 +44,13 @@ class ImagesController
         if ($cachingStrategy->validate($path, $config)) {
             $cachedImage = $cachingStrategy->resolve($path, $config);
             if (str($path)->lower()->endsWith(['.png', '.jpg', '.jpeg', '.webp'])) {
-                $image = Image::make($cachedImage);
+                $image = $this->imageManager->read($cachedImage);
 
-                $image->encode((string)str($image->mime())->afterLast('/'));
-                $mime = $image->mime();
+//                $mime = str($path)->explode('.')->last();
+
+                $image = $image->encode(new AutoEncoder());
+                $mime = $image->mediaType();
+//                $image->encodeByExtension((string)str($mime)->afterLast('/'));
             } else {
                 $image = $cachedImage;
             }
@@ -57,16 +66,23 @@ class ImagesController
 
         $image = Storage::disk($config->filesystemDisk)->get($path);
         if (str($path)->lower()->endsWith(['.png', '.jpg', '.jpeg', '.webp'])) {
-            $image = Image::make(
-                $image,
-            );
-            $mime = $image->mime();
+            $image = $this->imageManager->read($image);
+            $encoded = $image->encode();
+            $mime = $encoded->mediaType();
 
             foreach ($this->manipulationsTransformer->decode($manipulations) as $method => $arguments) {
-                is_array($arguments)
-                    ? $image->{$method}(...$arguments)
-                    : $image->{$method}($arguments);
+                if ($method === 'widen') {
+                    $image->scale(width: $arguments);
+                } elseif ($method === 'encode') {
+                    $image->encodeByExtension($arguments);
+                } else {
+                    dd($method);
+                    is_array($arguments)
+                        ? $image->{$method}(...$arguments)
+                        : $image->{$method}($arguments);
+                }
             }
+
         }
 
         $cachingStrategy->cache($path, $image, $config);
