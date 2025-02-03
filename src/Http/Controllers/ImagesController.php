@@ -76,7 +76,6 @@ class ImagesController
                 } elseif ($method === 'encode') {
                     $image->encodeByExtension($arguments);
                 } else {
-                    dd($method);
                     is_array($arguments)
                         ? $image->{$method}(...$arguments)
                         : $image->{$method}($arguments);
